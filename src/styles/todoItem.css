@@ -1,0 +1,27 @@
+.todoItem {
+    background-color: #e0ffe0;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.todoItem span {
+    font-weight: bold;
+}
+
+.todoItem p {
+    margin: 0.5rem 0;
+}
+
+.todoItem button {
+    padding: 0.5rem;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.todoItem button:hover {
+    background-color: #cc0000;
+}

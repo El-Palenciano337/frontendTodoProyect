@@ -1,0 +1,33 @@
+.addTodoForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.addTodoForm label {
+    font-weight: bold;
+}
+
+.addTodoForm input,
+.addTodoForm button {
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+.addTodoForm button {
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.addTodoForm button:hover {
+    background-color: #555;
+}
+
+@media (max-width: 768px) {
+    .addTodoForm input,
+    .addTodoForm button {
+        font-size: 1.2rem;
+    }
+}
