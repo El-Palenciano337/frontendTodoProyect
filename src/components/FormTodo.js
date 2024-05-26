@@ -1,12 +1,12 @@
+import React, { useRef } from "react";
+import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../styles/FormTodo.scss";
 import { addGoal } from "../reducers/goalsSlice";
 import { addTodo } from "../reducers/todosSlice";
-import { useDispatch } from "react-redux";
-import { useRef } from "react";
 
-function FormTodo(props) {
+function FormTodo({ option }) {
     const inputRefName = useRef();
     const inputRefDescription = useRef();
     const inputRefDueDate = useRef();
@@ -15,13 +15,21 @@ function FormTodo(props) {
 
     const addItem = (e) => {
         e.preventDefault();
-        dispatch(
-            addGoal({
-                name: inputRefName.current.value,
-                description: inputRefDescription.current.value,
-                dueDate: inputRefDueDate.current.value,
-            })
-        );
+        const newItem = {
+            name: inputRefName.current.value,
+            description: inputRefDescription.current.value,
+            dueDate: inputRefDueDate.current.value,
+        };
+
+        if (option === "tasks") {
+            dispatch(addTodo(newItem));
+        } else if (option === "goals") {
+            dispatch(addGoal(newItem));
+        }
+
+        inputRefName.current.value = "";
+        inputRefDescription.current.value = "";
+        inputRefDueDate.current.value = "";
     };
 
     return (
@@ -51,7 +59,7 @@ function FormTodo(props) {
             </Form.Group>
 
             <Button variant="primary" onClick={addItem}>
-                Add Task
+                Add {option === "tasks" ? "Task" : "Goal"}
             </Button>
         </Form>
     );

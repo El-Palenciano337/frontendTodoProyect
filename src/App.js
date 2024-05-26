@@ -1,52 +1,69 @@
-import { Item } from "./components/Item";
-import { FormTodo } from "./components/FormTodo";
-import { Menu } from "./components/Menu";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { Item } from "./components/Item";
+import { FormTodo } from "./components/FormTodo";
+import { Menu } from "./components/Menu";
 import { MobileButton } from "./components/MobileButton";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { initAddTodo } from "./reducers/todosSlice";
+import { initAddTodo, clearTodos } from "./reducers/todosSlice";
+import { initAddGoal, clearGoals } from "./reducers/goalsSlice";
 import "./App.scss";
 
 function App() {
-    const todos = useSelector((state) => state.goals.value);
-    const option = useSelector((state) => state.goals.value);
+    const todos = useSelector((state) => state.todos.value);
+    const option = useSelector((state) => state.option.value);
     const goals = useSelector((state) => state.goals.value);
     const dispatch = useDispatch();
 
     function initFetch() {
-        fetch("http://localhost:3001/tasks/getTasks", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "todoproyect",
-            },
-        })
-            .then((response) => {
-                return response.json();
+        if (option === "tasks") {
+            dispatch(clearTodos());
+            fetch("http://localhost:3001/tasks/getTasks", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "todoproyect",
+                },
             })
-            .then((response) => {
-                response.map((task) => {
-                    dispatch(initAddTodo(task));
+                .then((response) => response.json())
+                .then((response) => {
+                    response.forEach((task) => {
+                        dispatch(initAddTodo(task));
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
                 });
+        } else {
+            dispatch(clearGoals());
+            fetch("http://localhost:3001/goals/getGoals", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "todoproyect",
+                },
             })
-            .catch((err) => {
-                console.log(err);
-            });
+                .then((response) => response.json())
+                .then((response) => {
+                    response.forEach((goal) => {
+                        dispatch(initAddGoal(goal));
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
     }
+
     useEffect(() => {
         initFetch();
-    }, []);
-
-    /* const [list, setList] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState("Tasks"); */
+    }, [dispatch, option]);
 
     return (
         <>
-            <Menu></Menu>
+            <Menu />
 
             <div className="App">
                 <Container>
@@ -56,35 +73,37 @@ function App() {
                             md={0}
                             className="d-none d-sm-block d-sm-none d-md-block"
                         >
-                            <FormTodo></FormTodo>
+                            <FormTodo option={option} />
                         </Col>
 
                         <Col xs={0} md={0}>
                             <Row className="d-md-none">
                                 <div className="bg-transparent overlapping-div">
-                                    <MobileButton className="float-left" />
+                                    <MobileButton className="loat-left" />
                                 </div>
                             </Row>
                             <div className="scrolling">
                                 {option === "tasks" &&
-                                    todos.map((todo, index) => (
+                                    todos.map((todo) => (
                                         <Item
-                                            id={todo.id}
-                                            key={index}
+                                            id={todo._id}
+                                            key={todo._id}
                                             name={todo.name}
                                             description={todo.description}
                                             dueDate={todo.dueDate}
-                                        ></Item>
+                                            option={option}
+                                        />
                                     ))}
                                 {option === "goals" &&
-                                    goals.map((goal, index) => (
-                                        <Item>
-                                            id={goal.id}
-                                            key={index}
+                                    goals.map((goal) => (
+                                        <Item
+                                            id={goal._id}
+                                            key={goal._id}
                                             name={goal.name}
                                             description={goal.description}
                                             dueDate={goal.dueDate}
-                                        </Item>
+                                            option={option}
+                                        />
                                     ))}
                             </div>
                         </Col>

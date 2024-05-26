@@ -21,12 +21,14 @@ export const todosSlice = createSlice({
             });
         },
         initAddTodo: (state, action) => {
-            console.log(action.payload);
             state.value.push(action.payload);
+        },
+        clearTodos: (state) => {
+            state.value = [];
         },
         removeTodo: (state, action) => {
             state.value = state.value.filter(
-                (task) => task.id !== action.payload
+                (task) => task._id !== action.payload
             );
             fetch("http://localhost:3001/tasks/removeTask/" + action.payload, {
                 method: "DELETE",
@@ -41,7 +43,8 @@ export const todosSlice = createSlice({
     },
 });
 
-export const { addTodo, initAddTodo, removeTodo } = todosSlice.actions;
+export const { addTodo, initAddTodo, removeTodo, clearTodos } =
+    todosSlice.actions;
 export const selectTodos = (state) => state.todos.value;
 
 export default todosSlice.reducer;

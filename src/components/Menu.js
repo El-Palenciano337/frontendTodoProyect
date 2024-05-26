@@ -9,12 +9,10 @@ function Menu() {
     const option = useSelector((state) => state.option.value);
     const dispatch = useDispatch();
 
-    const changeOptionFunction = (e) => {
+    const changeOptionFunction = (newOption) => (e) => {
         e.preventDefault();
-        if (option === "tasks") {
-            dispatch(changeOption("goals"));
-        } else {
-            dispatch(changeOption("tasks"));
+        if (option !== newOption) {
+            dispatch(changeOption(newOption));
         }
     };
 
@@ -32,13 +30,13 @@ function Menu() {
                     <Nav className="me-auto">
                         <Nav.Link
                             eventKey={"tasks"}
-                            onClick={changeOptionFunction}
+                            onClick={changeOptionFunction("tasks")}
                         >
                             Tasks
                         </Nav.Link>
                         <Nav.Link
                             eventKey={"goals"}
-                            onClick={changeOptionFunction}
+                            onClick={changeOptionFunction("goals")}
                         >
                             Goals
                         </Nav.Link>

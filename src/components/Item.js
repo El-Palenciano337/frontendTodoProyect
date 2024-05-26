@@ -1,29 +1,32 @@
+import React from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import { removeTodo } from "../reducers/todosSlice";
 import { useDispatch } from "react-redux";
+import { removeTodo } from "../reducers/todosSlice";
 import "../styles/Item.scss";
+import { removeGoal } from "../reducers/goalsSlice";
 
-function Item(props) {
+function Item({ id, name, description, dueDate, option }) {
     const dispatch = useDispatch();
 
     const removeItem = (e) => {
         e.preventDefault();
-        dispatch(removeTodo(props.id));
+        if (option == "tasks") {
+            dispatch(removeTodo(id));
+        } else {
+            dispatch(removeGoal(id));
+        }
     };
 
     return (
         <Card style={{ width: "25rem" }}>
             <Card.Body>
-                <Card.Title>{props.name}</Card.Title>
-
+                <Card.Title>{name}</Card.Title>
                 <Card.Text className="fw-bold">Description</Card.Text>
-                <Card.Text>{props.description}</Card.Text>
-
+                <Card.Text>{description}</Card.Text>
                 <Card.Text className="fw-bold">Due Date</Card.Text>
-                <Card.Text>{props.dueDate}</Card.Text>
+                <Card.Text>{dueDate}</Card.Text>
             </Card.Body>
-
             <Card.Body>
                 <Button
                     variant="primary"
