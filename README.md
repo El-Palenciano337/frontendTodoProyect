@@ -7,5 +7,5 @@ Brandon Palencia - 22011436 - Proyecto Final.-
 
 # Actividad Docker | #6
 
-*Crear imagen en docker con el siguiente comando: docker build -t docker-image-todomanager:1.0 .
-*Crear el contenedor de la imagen con el comando: docker run -p 4000:80 --name container-todomanager docker-image-todomanager:1.0
+- Crear imagen en docker con el siguiente comando: docker build -t docker-image-todomanager:1.0 .
+- Crear el contenedor de la imagen con el comando: docker run -p 4000:80 --name container-todomanager docker-image-todomanager:1.0
